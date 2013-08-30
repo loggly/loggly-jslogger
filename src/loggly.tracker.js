@@ -1,5 +1,5 @@
 (function(window, document) {
-    var LOGGLY_INPUT_PREFIX = 'http' + ( ('https:' === document.location.protocol ? 's' : '') ) + '://collector01.chipper01.loggly.net/inputs/',
+    var LOGGLY_INPUT_PREFIX = 'http' + ( ('https:' === document.location.protocol ? 's' : '') ) + '://logs-01.loggly.com/inputs/',
         LOGGLY_INPUT_SUFFIX = '.gif?',
         LOGGLY_SESSION_KEY = 'logglytrackingsession',
         LOGGLY_SESSION_KEY_LENGTH = LOGGLY_SESSION_KEY.length + 1;
