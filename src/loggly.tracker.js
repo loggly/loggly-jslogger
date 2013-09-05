@@ -77,9 +77,16 @@
             // inject session id
             data.sessionId = this.session_id;
         
-            var im = new Image(),
-                q = 'PLAINTEXT=' + encodeURIComponent(JSON.stringify(data));
-            im.src = this.inputUrl + q;
+            try {
+                var im = new Image(),
+                    q = 'PLAINTEXT=' + encodeURIComponent(JSON.stringify(data));
+                im.src = this.inputUrl + q;
+            } catch (ex) {
+                if (window && window.console && typeof window.console.log === 'function') {
+                    console.log("Failed to log to loggly because of this exception:\n" + ex);
+                    console.log("Failed log data:", data);
+                }
+            }
         },
         /**
          *  These cookie functions are not a global utilities.  It is for purpose of this tracker only
