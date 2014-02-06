@@ -1,5 +1,6 @@
 (function(window, document) {
-    var LOGGLY_INPUT_PREFIX = 'http' + ( ('https:' === document.location.protocol ? 's' : '') ) + '://logs-01.loggly.com/inputs/',
+    var LOGGLY_INPUT_PREFIX = 'http' + ( ('https:' === document.location.protocol ? 's' : '') ) + '://',
+        LOGGLY_COLLECTOR_DOMAIN = 'logs-01.loggly.com',
         LOGGLY_INPUT_SUFFIX = '.gif?',
         LOGGLY_SESSION_KEY = 'logglytrackingsession',
         LOGGLY_SESSION_KEY_LENGTH = LOGGLY_SESSION_KEY.length + 1;
@@ -23,7 +24,11 @@
     }
     
     function setInputUrl(tracker) {
-        tracker.inputUrl = LOGGLY_INPUT_PREFIX + tracker.key + LOGGLY_INPUT_SUFFIX;
+        tracker.inputUrl = LOGGLY_INPUT_PREFIX 
+            + (tracker.logglyCollectorDomain || LOGGLY_COLLECTOR_DOMAIN)
+            + '/inputs/'
+            + tracker.key 
+            + LOGGLY_INPUT_SUFFIX;
     }
     
     LogglyTracker.prototype = {
@@ -54,6 +59,11 @@
                         'text': data
                     };
                 } else {
+                    if(data.logglyCollectorDomain) {
+                        self.logglyCollectorDomain = data.logglyCollectorDomain;
+                        return;
+                    }
+                
                     if(data.logglyKey) {
                         setKey(self, data.logglyKey);
                         return;

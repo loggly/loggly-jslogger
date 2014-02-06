@@ -72,8 +72,6 @@ describe("loggly.tracker", function() {
         var originalKey = _LTracker.key,
             madeupKey = 'madeupkey';
             
-        console.log(originalKey);
-        
         spyOn(_LTracker, 'track');
         _LTracker.push({'logglyKey': madeupKey});
         
@@ -88,6 +86,22 @@ describe("loggly.tracker", function() {
         jasmine.Clock.tick(20);
         
         expect(_LTracker.key).toBe(originalKey);
+    });
+    
+    it("sets custom collector domain", function() {
+        var customDomain = "logglyidontexist.com";
+        _LTracker.push({'logglyCollectorDomain': customDomain});
+        _LTracker.push({'logglyKey': _LTracker.key});   // kick it so it sets the collector domain
+        
+        jasmine.Clock.tick(20);
+        
+        expect(_LTracker.logglyCollectorDomain).toBe(customDomain);
+        expect(_LTracker.inputUrl).toContain('http://' + customDomain + '/inputs/');
+        
+        delete _LTracker.logglyCollectorDomain;
+        _LTracker.push({'logglyKey': _LTracker.key});
+        jasmine.Clock.tick(20);
+        
     });
     
     it("calls track when pushing normal tracking object", function() {
