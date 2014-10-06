@@ -1,10 +1,21 @@
 loggly-jslogger
 ===============
 
+
 Client-side (browser) logger to use with Loggly gen2.
 
 Installation
 ------------
+
+**Using Bower repository**
+```   
+bower install loggly-jslogger
+```
+
+**Using CloudFront**
+```html
+<script type="text/javascript" src="http://cloudfront.loggly.com/js/loggly.tracker.js" ></script>
+```
 
 Place the following on your page, and replace the logglyKey value with the key provided by the website:
 ```html
