@@ -4,7 +4,7 @@
         LOGGLY_INPUT_SUFFIX = '.gif?',
         LOGGLY_SESSION_KEY = 'logglytrackingsession',
         LOGGLY_SESSION_KEY_LENGTH = LOGGLY_SESSION_KEY.length + 1;
-	var sendConsoleErrors;
+    
     function uuid() {
         // lifted from here -> http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript/2117523#2117523
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -15,6 +15,7 @@
     
     function LogglyTracker() {
         this.key = false;
+        this.sendConsoleErrors = true;
     }
     
     function setKey(tracker, key) {
@@ -23,11 +24,10 @@
         setInputUrl(tracker);
     }
 	
-	function setConsoleError(tracker,sendConsoleErrors) {
-		tracker.sendConsoleErrors = sendConsoleErrors;
-	}
+    function setSendConsoleError(tracker, sendConsoleErrors) {
+	tracker.sendConsoleErrors = sendConsoleErrors;
+    }
 	
-    
     function setInputUrl(tracker) {
         tracker.inputUrl = LOGGLY_INPUT_PREFIX 
             + (tracker.logglyCollectorDomain || LOGGLY_COLLECTOR_DOMAIN)
@@ -68,11 +68,10 @@
                         self.logglyCollectorDomain = data.logglyCollectorDomain;
                         return;
                     }
-					
-					if(data.sendConsoleErrors) {
-					       setConsoleError(self, data.sendConsoleErrors);
-					}
-				    if(data.logglyKey) {
+		    if(data.sendConsoleErrors !== undefined) {
+		       setSendConsoleError(self, data.sendConsoleErrors);
+		    }
+	    	    if(data.logglyKey) {
                         setKey(self, data.logglyKey);
                         return;
                     }
@@ -81,7 +80,7 @@
                         return;
                     }
                 }
-				if(!self.key) {
+		if(!self.key) {
                     return;
                 }
                 self.track(data);
@@ -134,23 +133,22 @@
         }
     }
     
-	//send console error messages to Loggly
-	window.onerror = function (msg, url, line, col){
+    //send console error messages to Loggly
+    window.onerror = function (msg, url, line, col){
 	   
-	   if(_LTracker.sendConsoleErrors){
-		   _LTracker.push(
-			{ 
-				category: 'BrowserJsException',
-				exception: 
-				{
-					message: msg,
-					url: url,
-					lineno: line,
-					colno: col,
-				}
-			});
-	   }
-	};
+	if(tracker.sendConsoleErrors === true){
+	   	tracker.push({ 
+			category: 'BrowserJsException',
+			exception: 
+			{
+				message: msg,
+				url: url,
+				lineno: line,
+				colno: col,
+			}
+		});
+   	}
+     };
 	
     window._LTracker = tracker; // default global tracker
     
