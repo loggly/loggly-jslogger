@@ -136,17 +136,17 @@
     //send console error messages to Loggly
     window.onerror = function (msg, url, line, col){
 	   
-	if(tracker.sendConsoleErrors === true){
-	   	tracker.push({ 
-			category: 'BrowserJsException',
-			exception: 
-			{
-				message: msg,
-				url: url,
-				lineno: line,
-				colno: col,
-			}
-		});
+    if(tracker.sendConsoleErrors === true){
+        tracker.push({ 
+	    category: 'BrowserJsException',
+	    exception: 
+		{
+	            message: msg,
+		    url: url,
+		    lineno: line,
+		    colno: col,
+		}
+	    });
    	}
      };
 	
