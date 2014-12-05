@@ -15,6 +15,7 @@
     
     function LogglyTracker() {
         this.key = false;
+	this.sendConsoleErrors = false;
     }
     
     function setKey(tracker, key) {
@@ -23,6 +24,30 @@
         setInputUrl(tracker);
     }
     
+	function setSendConsoleError(tracker, sendConsoleErrors) {
+	    tracker.sendConsoleErrors = sendConsoleErrors;
+		
+	    if(tracker.sendConsoleErrors === true){
+		var _onerror = window.onerror;
+		//send console error messages to Loggly
+		window.onerror = function (msg, url, line, col){
+		    tracker.push({ 
+			category: 'BrowserJsException',
+			exception: {
+			    message: msg,
+			    url: url,
+			    lineno: line,
+			    colno: col,
+			}
+		    });
+				
+		    if (_onerror && typeof _onerror === 'function') {
+			_onerror.apply(window, arguments);
+		     }
+		};
+	    }
+	}
+	
     function setInputUrl(tracker) {
         tracker.inputUrl = LOGGLY_INPUT_PREFIX 
             + (tracker.logglyCollectorDomain || LOGGLY_COLLECTOR_DOMAIN)
@@ -64,6 +89,10 @@
                         return;
                     }
                 
+		    if(data.setConsoleError !== undefined) {
+		       	setSendConsoleError(self, data.setConsoleError);
+		    }
+				
                     if(data.logglyKey) {
                         setKey(self, data.logglyKey);
                         return;
