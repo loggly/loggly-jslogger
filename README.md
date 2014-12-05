@@ -11,7 +11,10 @@ Place the following on your page, and replace the logglyKey value with the key p
 <script type="text/javascript" src="/js/loggly.tracker.js" async></script>
 <script>
   var _LTracker = _LTracker || [];
-  _LTracker.push({'logglyKey': '8c518f97-e3e0-4bfb-a8ed-582d084a5289' });
+  _LTracker.push({
+      'logglyKey': '8c518f97-e3e0-4bfb-a8ed-582d084a5289',
+      'setConsoleError' : true
+    });
 </script>
 ```
 
