@@ -4,7 +4,7 @@
         LOGGLY_INPUT_SUFFIX = '.gif?',
         LOGGLY_SESSION_KEY = 'logglytrackingsession',
         LOGGLY_SESSION_KEY_LENGTH = LOGGLY_SESSION_KEY.length + 1;
-    
+
     function uuid() {
         // lifted from here -> http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript/2117523#2117523
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -15,7 +15,7 @@
     
     function LogglyTracker() {
         this.key = false;
-        this.sendConsoleErrors = true;
+	this.sendConsoleErrors = false;
     }
     
     function setKey(tracker, key) {
@@ -23,10 +23,30 @@
         tracker.setSession();
         setInputUrl(tracker);
     }
-	
-    function setSendConsoleError(tracker, sendConsoleErrors) {
-	tracker.sendConsoleErrors = sendConsoleErrors;
-    }
+    
+	function setSendConsoleError(tracker, sendConsoleErrors) {
+	    tracker.sendConsoleErrors = sendConsoleErrors;
+		
+	    if(tracker.sendConsoleErrors === true){
+		var _onerror = window.onerror;
+		//send console error messages to Loggly
+		window.onerror = function (msg, url, line, col){
+		    tracker.push({ 
+			category: 'BrowserJsException',
+			exception: {
+			    message: msg,
+			    url: url,
+			    lineno: line,
+			    colno: col,
+			}
+		    });
+				
+		    if (_onerror && typeof _onerror === 'function') {
+			_onerror.apply(window, arguments);
+		     }
+		};
+	    }
+	}
 	
     function setInputUrl(tracker) {
         tracker.inputUrl = LOGGLY_INPUT_PREFIX 
@@ -68,21 +88,26 @@
                         self.logglyCollectorDomain = data.logglyCollectorDomain;
                         return;
                     }
-		    if(data.sendConsoleErrors !== undefined) {
-		       setSendConsoleError(self, data.sendConsoleErrors);
+                
+		    if(data.setConsoleError !== undefined) {
+		       	setSendConsoleError(self, data.setConsoleError);
 		    }
-	    	    if(data.logglyKey) {
+				
+                    if(data.logglyKey) {
                         setKey(self, data.logglyKey);
                         return;
                     }
+                
                     if(data.session_id) {
                         self.setSession(data.session_id);
                         return;
                     }
                 }
-		if(!self.key) {
+                
+                if(!self.key) {
                     return;
                 }
+            
                 self.track(data);
             }, 0);
             
@@ -133,23 +158,6 @@
         }
     }
     
-    //send console error messages to Loggly
-    window.onerror = function (msg, url, line, col){
-	   
-    if(tracker.sendConsoleErrors === true){
-        tracker.push({ 
-	    category: 'BrowserJsException',
-	    exception: 
-		{
-	            message: msg,
-		    url: url,
-		    lineno: line,
-		    colno: col,
-		}
-	    });
-   	}
-     };
-	
     window._LTracker = tracker; // default global tracker
     
     window.LogglyTracker = LogglyTracker;   // if others want to instantiate more than one tracker
