@@ -89,8 +89,8 @@
                         return;
                     }
                 
-		    if(data.setConsoleError !== undefined) {
-		       	setSendConsoleError(self, data.setConsoleError);
+		    if(data.sendConsoleErrors !== undefined) {
+		       	setSendConsoleError(self, data.sendConsoleErrors);
 		    }
 				
                     if(data.logglyKey) {
