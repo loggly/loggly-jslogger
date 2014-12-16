@@ -16,6 +16,7 @@
     function LogglyTracker() {
         this.key = false;
 	this.sendConsoleErrors = false;
+	this.tag = 'jslogger'; 
     }
     
     function setKey(tracker, key) {
@@ -47,6 +48,10 @@
 		};
 	    }
 	}
+    
+    function setTag(tracker, tag){
+    	tracker.tag = tag;
+    }	
 	
     function setInputUrl(tracker) {
         tracker.inputUrl = LOGGLY_INPUT_PREFIX 
@@ -91,6 +96,10 @@
                 
 		    if(data.sendConsoleErrors !== undefined) {
 		       	setSendConsoleError(self, data.sendConsoleErrors);
+		    }
+		    
+		    if(data.tag){
+		    	setTag(self, data.tag);
 		    }
 				
                     if(data.logglyKey) {
