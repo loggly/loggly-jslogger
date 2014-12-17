@@ -58,6 +58,7 @@
             + (tracker.logglyCollectorDomain || LOGGLY_COLLECTOR_DOMAIN)
             + '/inputs/'
             + tracker.key 
+	    + '/tag/'+tracker.tag+'/'
             + LOGGLY_INPUT_SUFFIX;
     }
     
