@@ -13,7 +13,8 @@ Place the following on your page, and replace the logglyKey value with the key p
   var _LTracker = _LTracker || [];
   _LTracker.push({
       'logglyKey': '8c518f97-e3e0-4bfb-a8ed-582d084a5289',
-      'sendConsoleErrors' : true
+      'sendConsoleErrors' : true,
+      'tag' : 'jslogger'
     });
 </script>
 ```
