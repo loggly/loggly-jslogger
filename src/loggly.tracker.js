@@ -16,6 +16,7 @@
     function LogglyTracker() {
         this.key = false;
 	this.sendConsoleErrors = false;
+	this.tag = 'jslogger'; 
     }
     
     function setKey(tracker, key) {
@@ -47,12 +48,17 @@
 		};
 	    }
 	}
+    
+    function setTag(tracker, tag){
+    	tracker.tag = tag;
+    }	
 	
     function setInputUrl(tracker) {
         tracker.inputUrl = LOGGLY_INPUT_PREFIX 
             + (tracker.logglyCollectorDomain || LOGGLY_COLLECTOR_DOMAIN)
             + '/inputs/'
             + tracker.key 
+	    + '/tag/'+tracker.tag+'/'
             + LOGGLY_INPUT_SUFFIX;
     }
     
@@ -91,6 +97,10 @@
                 
 		    if(data.sendConsoleErrors !== undefined) {
 		       	setSendConsoleError(self, data.sendConsoleErrors);
+		    }
+		    
+		    if(data.tag){
+		    	setTag(self, data.tag);
 		    }
 				
                     if(data.logglyKey) {
