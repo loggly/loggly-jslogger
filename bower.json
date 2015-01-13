@@ -1,0 +1,34 @@
+{
+  "name": "loggly-jslogger",
+  "homepage": "https://github.com/loggly/loggly-jslogger",
+  "_release": "7418993b3b",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "7418993b3bc542a6d2d420257e7d9aab55ec139a"
+  },
+  "_source": "git://github.com/loggly/loggly-jslogger.git",
+  "_target": "*",
+  "_originalSource": "loggly-jslogger",
+  "_direct": true,
+  "version": "1.1.0",
+  "description": "A Javascript client to send logs to Loggly.",
+  "main": "src/loggly.tracker.js",
+  "keywords": [
+    "loggly-jslogger",
+    "jslogger",
+    "loggly"
+  ],
+  "authors": [
+    "Loggly"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
