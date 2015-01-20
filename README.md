@@ -48,4 +48,4 @@ myBetterLogger.push({'logglyKey': '8c518f97-e3e0-4bfb-a8ed-582d084a5289' });  //
 
 Send Console Errors to Loggly
 ----
-Keeping <strong>sendConsolErrors</strong> value to <i>true</i> will send all the unhandled errors to the Loggly with the detailed information like error message, URL, line number and column number. This script also take cares of all the previously defined window.onerror functions. 
+Keeping <strong>sendConsoleErrors</strong> value to <i>true</i> will send all the unhandled errors to the Loggly with the detailed information like error message, URL, line number and column number. This script also take cares of all the previously defined window.onerror functions. 
