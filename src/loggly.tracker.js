@@ -84,42 +84,42 @@
 
             var self = this;
 
-            setTimeout(function() {
-                if(type === 'string') {
-                    data = {
-                        'text': data
-                    };
-                } else {
-                    if(data.logglyCollectorDomain) {
-                        self.logglyCollectorDomain = data.logglyCollectorDomain;
-                        return;
-                    }
-                
-		    if(data.sendConsoleErrors !== undefined) {
-		       	setSendConsoleError(self, data.sendConsoleErrors);
-		    }
-		    
-		    if(data.tag){
-		    	setTag(self, data.tag);
-		    }
-				
-                    if(data.logglyKey) {
-                        setKey(self, data.logglyKey);
-                        return;
-                    }
-                
-                    if(data.session_id) {
-                        self.setSession(data.session_id);
-                        return;
-                    }
-                }
-                
-                if(!self.key) {
+            
+	    if(type === 'string') {
+                data = {
+                    'text': data
+                };
+            } else {
+                if(data.logglyCollectorDomain) {
+                    self.logglyCollectorDomain = data.logglyCollectorDomain;
                     return;
                 }
+        
+	        if(data.sendConsoleErrors !== undefined) {
+	       	    setSendConsoleError(self, data.sendConsoleErrors);
+	        }
+	    
+	        if(data.tag){
+	    	    setTag(self, data.tag);
+	        }
+			
+                if(data.logglyKey) {
+                    setKey(self, data.logglyKey);
+                    return;
+                }
+        
+                if(data.session_id) {
+                    self.setSession(data.session_id);
+                    return;
+                }
+            }
+        
+            if(!self.key) {
+                return;
+            }
+    
+            self.track(data);
             
-                self.track(data);
-            }, 0);
             
         },
         track: function(data) {
