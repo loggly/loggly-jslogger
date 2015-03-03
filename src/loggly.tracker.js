@@ -15,9 +15,8 @@
     
     function LogglyTracker() {
         this.key = false;
-	this.sendConsoleErrors = false;
-	this.tag = 'jslogger'; 
-    }
+		this.sendConsoleErrors = false;
+	}
     
     function setKey(tracker, key) {
         tracker.key = key;
@@ -49,17 +48,12 @@
 	    }
 	}
     
-    function setTag(tracker, tag){
-    	tracker.tag = tag;
-    }	
-	
     function setInputUrl(tracker) {
         tracker.inputUrl = LOGGLY_INPUT_PREFIX 
             + (tracker.logglyCollectorDomain || LOGGLY_COLLECTOR_DOMAIN)
             + '/inputs/'
             + tracker.key 
-	    + '/tag/'+tracker.tag+'/'
-            + LOGGLY_INPUT_SUFFIX;
+	        + LOGGLY_INPUT_SUFFIX;
     }
     
     LogglyTracker.prototype = {
@@ -95,15 +89,11 @@
                     return;
                 }
         
-	        if(data.sendConsoleErrors !== undefined) {
-	       	    setSendConsoleError(self, data.sendConsoleErrors);
-	        }
+				if(data.sendConsoleErrors !== undefined) {
+					setSendConsoleError(self, data.sendConsoleErrors);
+				}
 	    
-	        if(data.tag){
-	    	    setTag(self, data.tag);
-	        }
-			
-                if(data.logglyKey) {
+				if(data.logglyKey) {
                     setKey(self, data.logglyKey);
                     return;
                 }
@@ -128,7 +118,7 @@
         
             try {
                 var im = new Image(),
-                    q = 'PLAINTEXT=' + encodeURIComponent(JSON.stringify(data));
+                q = 'PLAINTEXT=' + encodeURIComponent(JSON.stringify(data));
                 im.src = this.inputUrl + q;
             } catch (ex) {
                 if (window && window.console && typeof window.console.log === 'function') {
