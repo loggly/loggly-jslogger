@@ -1,0 +1,25 @@
+{
+  "name": "loggly-jslogger",
+  "version": "1.2.0",
+  "description": "A Javascript client to send logs to Loggly.",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/loggly/loggly-jslogger.git"
+  },
+  "author": "Loggly",
+  "keywords": [
+    "loggly-jslogger",
+    "jslogger",
+    "loggly",
+	"log"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "bower": "^1.3.1",
+    "grunt": "^0.4.4",
+    "grunt-contrib-uglify": "^0.4.0"
+  },
+  "scripts": {
+    "postinstall": "bower install"
+  }
+}
