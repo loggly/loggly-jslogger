@@ -15,8 +15,8 @@
     
     function LogglyTracker() {
         this.key = false;
-		this.sendConsoleErrors = false;
-	}
+        this.sendConsoleErrors = false;
+    }
     
     function setKey(tracker, key) {
         tracker.key = key;
@@ -24,36 +24,36 @@
         setInputUrl(tracker);
     }
     
-	function setSendConsoleError(tracker, sendConsoleErrors) {
-	    tracker.sendConsoleErrors = sendConsoleErrors;
-		
-	    if(tracker.sendConsoleErrors === true){
-		var _onerror = window.onerror;
-		//send console error messages to Loggly
-		window.onerror = function (msg, url, line, col){
-		    tracker.push({ 
-			category: 'BrowserJsException',
-			exception: {
-			    message: msg,
-			    url: url,
-			    lineno: line,
-			    colno: col,
-			}
-		    });
-				
-		    if (_onerror && typeof _onerror === 'function') {
-			_onerror.apply(window, arguments);
-		     }
-		};
-	    }
-	}
+    function setSendConsoleError(tracker, sendConsoleErrors) {
+        tracker.sendConsoleErrors = sendConsoleErrors;
+        
+        if(tracker.sendConsoleErrors === true) {
+            var _onerror = window.onerror;
+            //send console error messages to Loggly
+            window.onerror = function (msg, url, line, col) {
+                tracker.push({ 
+                    category: 'BrowserJsException',
+                    exception: {
+                        message: msg,
+                        url: url,
+                        lineno: line,
+                        colno: col,
+                    }
+                });
+                
+                if (_onerror && typeof _onerror === 'function') {
+                    _onerror.apply(window, arguments);
+                }
+            };
+        }
+    }
     
     function setInputUrl(tracker) {
         tracker.inputUrl = LOGGLY_INPUT_PREFIX 
             + (tracker.logglyCollectorDomain || LOGGLY_COLLECTOR_DOMAIN)
             + '/inputs/'
             + tracker.key 
-	        + LOGGLY_INPUT_SUFFIX;
+            + LOGGLY_INPUT_SUFFIX;
     }
     
     LogglyTracker.prototype = {
@@ -79,7 +79,7 @@
             var self = this;
 
             
-	    if(type === 'string') {
+        if(type === 'string') {
                 data = {
                     'text': data
                 };
@@ -89,11 +89,11 @@
                     return;
                 }
         
-				if(data.sendConsoleErrors !== undefined) {
-					setSendConsoleError(self, data.sendConsoleErrors);
-				}
-	    
-				if(data.logglyKey) {
+                if(data.sendConsoleErrors !== undefined) {
+                    setSendConsoleError(self, data.sendConsoleErrors);
+                }
+        
+                if(data.logglyKey) {
                     setKey(self, data.logglyKey);
                     return;
                 }
@@ -109,7 +109,6 @@
             }
     
             self.track(data);
-            
             
         },
         track: function(data) {
