@@ -9,10 +9,10 @@ module.exports = function(grunt) {
                 files: { 'src/loggly.tracker.min.js': ['src/loggly.tracker.js'] }
             }
         }
-	});
+    });
 
     grunt.loadNpmTasks('grunt-contrib-uglify');
     
-	grunt.registerTask('default', ['uglify'] );
+    grunt.registerTask('default', ['uglify'] );
 
 };
