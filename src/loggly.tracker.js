@@ -77,9 +77,8 @@
             }
 
             var self = this;
-
             
-        if(type === 'string') {
+            if(type === 'string') {
                 data = {
                     'text': data
                 };
