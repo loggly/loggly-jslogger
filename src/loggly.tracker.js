@@ -118,8 +118,10 @@
 
             try {
                 var im = new Image(),
-                q = 'PLAINTEXT=' + encodeURIComponent(JSON.stringify(data));
-                im.src = this.inputUrl + q;
+                    q = 'PLAINTEXT=' + encodeURIComponent(JSON.stringify(data)),
+                    // prevent browsers and proxy servers from caching tracking pixel
+                    cacheBuster = 'CACHEBUST=' + Math.random() * 10000000000000000;
+                im.src = this.inputUrl + q + '&' + cacheBuster;
             } catch (ex) {
                 if (window && window.console && typeof window.console.log === 'function') {
                     console.log("Failed to log to loggly because of this exception:\n" + ex);
