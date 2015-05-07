@@ -166,4 +166,14 @@ describe("loggly.tracker", function() {
         expect(_LTracker.track).not.toHaveBeenCalled()
     });
 
+    it("contains a cachebuster string", function() {
+        var imageStub = {};
+        spyOn(window, 'Image').andReturn(imageStub);
+        spyOn(window.Math, 'random').andReturn(0.1234567890123456);
+
+        _LTracker.push('test');
+        jasmine.Clock.tick(20);
+
+        expect(imageStub.src).toContain('&CACHEBUST=1234567890123456');
+    });
 });
