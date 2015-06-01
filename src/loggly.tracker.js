@@ -298,7 +298,7 @@
                 }
             }
 
-            data.browser = this._client;
+            data.clientInfo = this._client;
         }
     };
 
