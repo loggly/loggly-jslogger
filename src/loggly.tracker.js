@@ -103,7 +103,7 @@
                 // Initialize
                 if(data.logglyKey) {
                     setKey(self, data.logglyKey, data.tags);
-                    self.browserInfo = (data.browserInfo);
+                    self.clientInfo = (data.clientInfo);
                     return;
                 }
 
@@ -118,7 +118,7 @@
             }
 
             // Append browser info
-            if (self.browserInfo) self.setClientInfo(data);
+            if (self.clientInfo) self.setClientInfo(data);
 
             self.track(data);
         },
