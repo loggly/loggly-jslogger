@@ -94,12 +94,12 @@
                     return;
                 }
                 
-				if(data.sendConsoleErrors !== undefined) {
-					setSendConsoleError(self, data.sendConsoleErrors);
+		if(data.sendConsoleErrors !== undefined) {
+		    setSendConsoleError(self, data.sendConsoleErrors);
                 }
                 
                 
-				if(data.tag) {
+		if(data.tag) {
                     setTag(self, data.tag);
                 }
 				
@@ -129,10 +129,10 @@
             try {
                 //creating an asynchronous XMLHttpRequest
                 var xmlHttp = new XMLHttpRequest();
-				xmlHttp.open('POST', this.inputUrl, true); //true for asynchronous request
-				xmlHttp.send(JSON.stringify(data));
+		xmlHttp.open('POST', this.inputUrl, true); //true for asynchronous request
+		xmlHttp.send(JSON.stringify(data));
                 
-                } catch (ex) {
+            } catch (ex) {
                 if (window && window.console && typeof window.console.log === 'function') {
                     console.log("Failed to log to loggly because of this exception:\n" + ex);
                     console.log("Failed log data:", data);
