@@ -28,10 +28,10 @@
         tracker.tag = tag;		
     }	
     
-	function setSendConsoleError(tracker, sendConsoleErrors) {
-	    tracker.sendConsoleErrors = sendConsoleErrors;
+    function setSendConsoleError(tracker, sendConsoleErrors) {
+	tracker.sendConsoleErrors = sendConsoleErrors;
 		
-	    if(tracker.sendConsoleErrors === true){
+	if(tracker.sendConsoleErrors === true){
             var _onerror = window.onerror;
             //send console error messages to Loggly
             window.onerror = function (msg, url, line, col){
