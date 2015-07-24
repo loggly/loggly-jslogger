@@ -1,10 +1,9 @@
 (function(window, document) {
     var LOGGLY_INPUT_PREFIX = 'http' + ( ('https:' === document.location.protocol ? 's' : '') ) + '://',
-        LOGGLY_COLLECTOR_DOMAIN = 'logs-01.loggly.com',
-        LOGGLY_INPUT_SUFFIX = '.gif?',
-        LOGGLY_SESSION_KEY = 'logglytrackingsession',
-        LOGGLY_SESSION_KEY_LENGTH = LOGGLY_SESSION_KEY.length + 1;
-
+    LOGGLY_COLLECTOR_DOMAIN = 'logs-01.loggly.com',
+    LOGGLY_SESSION_KEY = 'logglytrackingsession',
+    LOGGLY_SESSION_KEY_LENGTH = LOGGLY_SESSION_KEY.length + 1;
+    
     function uuid() {
         // lifted from here -> http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript/2117523#2117523
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -16,7 +15,8 @@
     function LogglyTracker() {
         this.key = false;
 		this.sendConsoleErrors = false;
-	}
+        this.tag = 'jslogger';
+    }
     
     function setKey(tracker, key) {
         tracker.key = key;
@@ -24,36 +24,41 @@
         setInputUrl(tracker);
     }
     
-	function setSendConsoleError(tracker, sendConsoleErrors) {
-	    tracker.sendConsoleErrors = sendConsoleErrors;
+    function setTag(tracker, tag){		
+        tracker.tag = tag;		
+    }	
+    
+    function setSendConsoleError(tracker, sendConsoleErrors) {
+	tracker.sendConsoleErrors = sendConsoleErrors;
 		
-	    if(tracker.sendConsoleErrors === true){
-		var _onerror = window.onerror;
-		//send console error messages to Loggly
-		window.onerror = function (msg, url, line, col){
-		    tracker.push({ 
-			category: 'BrowserJsException',
-			exception: {
-			    message: msg,
-			    url: url,
-			    lineno: line,
-			    colno: col,
-			}
-		    });
+	if(tracker.sendConsoleErrors === true){
+            var _onerror = window.onerror;
+            //send console error messages to Loggly
+            window.onerror = function (msg, url, line, col){
+                tracker.push({ 
+                    category: 'BrowserJsException',
+                    exception: {
+                        message: msg,
+                        url: url,
+                        lineno: line,
+                        colno: col,
+                    }
+                });
 				
-		    if (_onerror && typeof _onerror === 'function') {
-			_onerror.apply(window, arguments);
-		     }
-		};
-	    }
-	}
+                if (_onerror && typeof _onerror === 'function') {
+                    _onerror.apply(window, arguments);
+                }
+            };
+        }
+    }
     
     function setInputUrl(tracker) {
         tracker.inputUrl = LOGGLY_INPUT_PREFIX 
-            + (tracker.logglyCollectorDomain || LOGGLY_COLLECTOR_DOMAIN)
-            + '/inputs/'
-            + tracker.key 
-	        + LOGGLY_INPUT_SUFFIX;
+        + (tracker.logglyCollectorDomain || LOGGLY_COLLECTOR_DOMAIN)
+        + '/inputs/'
+        + tracker.key 
+        + '/tag/'
+        + tracker.tag;
     }
     
     LogglyTracker.prototype = {
@@ -61,7 +66,7 @@
             if(session_id) {
                 this.session_id = session_id;
                 this.setCookie(this.session_id);
-            } else if(!this.session_id) {
+                } else if(!this.session_id) {
                 this.session_id = this.readCookie();
                 if(!this.session_id) {
                     this.session_id = uuid();
@@ -75,39 +80,44 @@
             if( !data || !(type === 'object' || type === 'string') ) {
                 return;
             }
-
-            var self = this;
-
             
-	    if(type === 'string') {
+            var self = this;
+            
+            
+            if(type === 'string') {
                 data = {
                     'text': data
                 };
-            } else {
+                } else {
                 if(data.logglyCollectorDomain) {
                     self.logglyCollectorDomain = data.logglyCollectorDomain;
                     return;
                 }
-        
-				if(data.sendConsoleErrors !== undefined) {
-					setSendConsoleError(self, data.sendConsoleErrors);
-				}
-	    
-				if(data.logglyKey) {
+                
+		if(data.sendConsoleErrors !== undefined) {
+		    setSendConsoleError(self, data.sendConsoleErrors);
+                }
+                
+                
+		if(data.tag) {
+                    setTag(self, data.tag);
+                }
+				
+                if(data.logglyKey) {
                     setKey(self, data.logglyKey);
                     return;
                 }
-        
+                
                 if(data.session_id) {
                     self.setSession(data.session_id);
                     return;
                 }
             }
-        
+            
             if(!self.key) {
                 return;
             }
-    
+            
             self.track(data);
             
             
@@ -115,11 +125,13 @@
         track: function(data) {
             // inject session id
             data.sessionId = this.session_id;
-        
+            
             try {
-                var im = new Image(),
-                q = 'PLAINTEXT=' + encodeURIComponent(JSON.stringify(data));
-                im.src = this.inputUrl + q;
+                //creating an asynchronous XMLHttpRequest
+                var xmlHttp = new XMLHttpRequest();
+		xmlHttp.open('POST', this.inputUrl, true); //true for asynchronous request
+		xmlHttp.send(JSON.stringify(data));
+                
             } catch (ex) {
                 if (window && window.console && typeof window.console.log === 'function') {
                     console.log("Failed to log to loggly because of this exception:\n" + ex);
@@ -128,14 +140,14 @@
             }
         },
         /**
-         *  These cookie functions are not a global utilities.  It is for purpose of this tracker only
-         */
+            *  These cookie functions are not a global utilities.  It is for purpose of this tracker only
+        */
         readCookie: function() {
             var cookie = document.cookie,
-                i = cookie.indexOf(LOGGLY_SESSION_KEY);
+            i = cookie.indexOf(LOGGLY_SESSION_KEY);
             if(i < 0) {
                 return false;
-            } else {
+                } else {
                 var end = cookie.indexOf(';', i + 1);
                 end = end < 0 ? cookie.length : end;
                 return cookie.slice(i + LOGGLY_SESSION_KEY_LENGTH, end);
@@ -152,7 +164,7 @@
     
     if(existing && existing.length ) {
         var i = 0,
-            eLength = existing.length;
+        eLength = existing.length;
         for(i = 0; i < eLength; i++) {
             tracker.push(existing[i]);
         }
