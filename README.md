@@ -14,6 +14,7 @@ Place the following on your page, and replace the logglyKey value with the key p
   _LTracker.push({
       'logglyKey': '8c518f97-e3e0-4bfb-a8ed-582d084a5289',
       'sendConsoleErrors' : true,
+      'tag' : 'javascript-logs'
     });
 </script>
 ```
@@ -48,3 +49,14 @@ myBetterLogger.push({'logglyKey': '8c518f97-e3e0-4bfb-a8ed-582d084a5289' });  //
 Send Console Errors to Loggly
 ----
 Keeping <strong>sendConsoleErrors</strong> value to <i>true</i> will send all the unhandled errors to the Loggly with the detailed information like error message, URL, line number and column number. This script also take cares of all the previously defined window.onerror functions. 
+
+Send Tags to Loggly
+----
+
+Send your custom tags to Loggly by setting the `tag` property.
+
+```Javascript
+_LTracker.push({
+  'tag' : 'tag1,tag2'
+});
+```

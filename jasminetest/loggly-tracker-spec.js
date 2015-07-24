@@ -79,7 +79,7 @@ describe("loggly.tracker", function() {
         
         var key = _LTracker.key;
         expect(_LTracker.key).toBe(madeupKey);
-        expect(_LTracker.inputUrl).toContain(madeupKey + '.gif');
+        expect(_LTracker.inputUrl).toContain(madeupKey + '/tag');
         expect(_LTracker.track).not.toHaveBeenCalled();
         
         _LTracker.push({'logglyKey': originalKey});    // put it back to original state
