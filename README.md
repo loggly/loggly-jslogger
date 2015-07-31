@@ -57,6 +57,8 @@ Send your custom tags to Loggly by setting the `tag` property.
 
 ```Javascript
 _LTracker.push({
+  'logglyKey': '8c518f97-e3e0-4bfb-a8ed-582d084a5289',
+  'sendConsoleErrors' : true,
   'tag' : 'tag1,tag2'
 });
 ```
