@@ -3,6 +3,7 @@
     LOGGLY_COLLECTOR_DOMAIN = 'logs-01.loggly.com',
     LOGGLY_SESSION_KEY = 'logglytrackingsession',
     LOGGLY_SESSION_KEY_LENGTH = LOGGLY_SESSION_KEY.length + 1;
+    LOGGLY_PROXY_DOMAIN = 'loggly';
     
     function uuid() {
         // lifted from here -> http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript/2117523#2117523
@@ -14,8 +15,9 @@
     
     function LogglyTracker() {
         this.key = false;
-		this.sendConsoleErrors = false;
+	 this.sendConsoleErrors = false;
         this.tag = 'jslogger';
+        this.useDomainProxy = false;
     }
     
     function setKey(tracker, key) {
@@ -27,6 +29,12 @@
     function setTag(tracker, tag){		
         tracker.tag = tag;		
     }	
+    
+    function setDomainProxy(tracker, useDomainProxy){
+        tracker.useDomainProxy = useDomainProxy;
+        //refresh inputUrl value
+        setInputUrl(tracker);
+    }
     
     function setSendConsoleError(tracker, sendConsoleErrors) {
 	tracker.sendConsoleErrors = sendConsoleErrors;
@@ -53,12 +61,25 @@
     }
     
     function setInputUrl(tracker) {
-        tracker.inputUrl = LOGGLY_INPUT_PREFIX 
-        + (tracker.logglyCollectorDomain || LOGGLY_COLLECTOR_DOMAIN)
-        + '/inputs/'
-        + tracker.key 
-        + '/tag/'
-        + tracker.tag;
+        
+        if(tracker.useDomainProxy == true){
+            tracker.inputUrl = LOGGLY_INPUT_PREFIX 
+            + window.location.host
+            + '/'
+            + LOGGLY_PROXY_DOMAIN
+            + '/inputs/'
+            + tracker.key 
+            + '/tag/'
+            + tracker.tag;
+        }
+        else{
+            tracker.inputUrl = LOGGLY_INPUT_PREFIX 
+            + (tracker.logglyCollectorDomain || LOGGLY_COLLECTOR_DOMAIN)
+            + '/inputs/'
+            + tracker.key 
+            + '/tag/'
+            + tracker.tag;
+        }
     }
     
     LogglyTracker.prototype = {
@@ -88,7 +109,7 @@
                 data = {
                     'text': data
                 };
-                } else {
+            } else {
                 if(data.logglyCollectorDomain) {
                     self.logglyCollectorDomain = data.logglyCollectorDomain;
                     return;
@@ -97,10 +118,13 @@
 		if(data.sendConsoleErrors !== undefined) {
 		    setSendConsoleError(self, data.sendConsoleErrors);
                 }
-                
-                
+               	
 		if(data.tag) {
                     setTag(self, data.tag);
+                }
+		
+		if(data.useDomainProxy){
+                    setDomainProxy(self, data.useDomainProxy);
                 }
 				
                 if(data.logglyKey) {

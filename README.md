@@ -57,6 +57,36 @@ Send your custom tags to Loggly by setting the `tag` property.
 
 ```Javascript
 _LTracker.push({
+  'logglyKey': '8c518f97-e3e0-4bfb-a8ed-582d084a5289',
+  'sendConsoleErrors' : true,
   'tag' : 'tag1,tag2'
 });
+```
+
+Setup Proxy for Ad blockers
+----------
+You can proxy the requests from your own domain if the script or its requests are blocked by Ad blockers. To do this, you need to perform following steps
+
+Set `useProxyDomain` property to true
+
+```Javascript
+_LTracker.push({
+  'logglyKey': '8c518f97-e3e0-4bfb-a8ed-582d084a5289',
+  'sendConsoleErrors' : true,
+  'tag' : 'javascript-logs',
+  'useDomainProxy' : true
+});
+```
+
+Use the following configuration on your server to forward the requests to Loggly
+
+```
+#Proxy to Loggly
+location /loggly/ {
+    rewrite ^/loggly/(.*)$ /$1 break;  # remove the '/loggly' part from the path, leaving /inputs/xxxxxxxx-xxxx-.../tag/xxx
+	proxy_set_header Host logs-01.loggly.com;
+	proxy_set_header X-Real-IP $remote_addr;
+	proxy_set_header X-Forwarded-For $remote_addr;
+	proxy_pass http://logs-01.loggly.com;
+}
 ```
