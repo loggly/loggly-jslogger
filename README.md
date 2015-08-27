@@ -12,7 +12,7 @@ Place the following on your page, and replace the logglyKey value with the key p
 <script>
   var _LTracker = _LTracker || [];
   _LTracker.push({
-      'logglyKey': '8c518f97-e3e0-4bfb-a8ed-582d084a5289',
+      'logglyKey': 'your-customer-token',
       'sendConsoleErrors' : true,
       'tag' : 'javascript-logs'
     });
@@ -43,7 +43,7 @@ Customization
 separate logging instace:
 ```javascript
 var myBetterLogger = new LogglyTracker();
-myBetterLogger.push({'logglyKey': '8c518f97-e3e0-4bfb-a8ed-582d084a5289' });  // push a loggly key to initialize
+myBetterLogger.push({'logglyKey': 'your-customer-token' });  // push a loggly key to initialize
 ```
 
 Send Console Errors to Loggly
@@ -57,7 +57,7 @@ Send your custom tags to Loggly by setting the `tag` property.
 
 ```Javascript
 _LTracker.push({
-  'logglyKey': '8c518f97-e3e0-4bfb-a8ed-582d084a5289',
+  'logglyKey': 'your-customer-token',
   'sendConsoleErrors' : true,
   'tag' : 'tag1,tag2'
 });
@@ -71,7 +71,7 @@ Set `useProxyDomain` property to true
 
 ```Javascript
 _LTracker.push({
-  'logglyKey': '8c518f97-e3e0-4bfb-a8ed-582d084a5289',
+  'logglyKey': 'your-customer-token',
   'sendConsoleErrors' : true,
   'tag' : 'javascript-logs',
   'useDomainProxy' : true
