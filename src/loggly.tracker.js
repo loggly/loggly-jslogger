@@ -154,6 +154,7 @@
                 //creating an asynchronous XMLHttpRequest
                 var xmlHttp = new XMLHttpRequest();
 		xmlHttp.open('POST', this.inputUrl, true); //true for asynchronous request
+		xmlHttp.setRequestHeader('Content-Type', 'text/plain');
 		xmlHttp.send(JSON.stringify(data));
                 
             } catch (ex) {
