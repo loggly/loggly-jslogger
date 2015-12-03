@@ -27,8 +27,15 @@
     }
     
     function setTag(tracker, tag){		
-        tracker.tag = tag;		
-    }	
+        tracker.tag = tag;
+        if (tracker.mutableTags) {
+            setInputUrl(tracker);
+        }
+    }
+
+    function setMutableTags(tracker) {
+        tracker.mutableTags = true;
+    }
     
     function setDomainProxy(tracker, useDomainProxy){
         tracker.useDomainProxy = useDomainProxy;
@@ -118,6 +125,10 @@
 		if(data.sendConsoleErrors !== undefined) {
 		    setSendConsoleError(self, data.sendConsoleErrors);
                 }
+
+             if (data.mutableTags) {
+                setMutableTags(self);
+             }
                	
 		if(data.tag) {
                     setTag(self, data.tag);
