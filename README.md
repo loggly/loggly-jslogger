@@ -63,6 +63,19 @@ _LTracker.push({
 });
 ```
 
+By default, tags are set once and are then immutable. To enable changing the tag with each log statement, set `mutableTags` to true when initializing:
+
+```Javascript
+_LTracker.push({
+  'logglyKey': 'your-customer-token',
+  'sendConsoleErrors' : true,
+  'tag' : 'tag1,tag2',
+  'mutableTags' : true
+});
+```
+
+If mutable tags are enabled, any log object passed with a 'tag' key will overwrite the previous tags.
+
 Setup Proxy for Ad blockers
 ----------
 You can proxy the requests from your own domain if the script or its requests are blocked by Ad blockers. To do this, you need to perform following steps
