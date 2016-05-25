@@ -7,11 +7,11 @@ module.exports = function (grunt) {
       },
       main : {
         files : {
-          'src/loggly.tracker.min.js' : ['src/loggly.tracker.js']
+          'src/loggly.tracker-2.1.min.js' : ['src/loggly.tracker.js']
         }
       }
     }
-  });
+	});
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.registerTask('default', ['uglify']);
