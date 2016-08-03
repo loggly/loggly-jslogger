@@ -181,6 +181,7 @@
                     clearTimeout(postTimeout);
                     console.log("Loggly has attempted to log this data for the last minute and failed. Ceasing" +
                         " attempts to log.");
+                    console.log("Failed log data:", data);
                 }
             }
         },
