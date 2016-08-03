@@ -168,7 +168,7 @@
                 xmlHttp.setRequestHeader('Content-Type', 'text/plain');
                 xmlHttp.send(JSON.stringify(data));
                 xmlHttp.onreadystatechange = function() {
-                    if(xmlHttp.readyState === 4 && xmlHttp.status !== 200) {
+                    if(xmlHttp.readyState === 4 && xmlHttp.status === 0) {
                         if(attemptCounter <= 12) {
                             console.log("Failed to log to loggly because of a network condition.");
                             console.log("Will attempt to log again in 5 seconds.");
