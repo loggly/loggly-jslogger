@@ -151,6 +151,8 @@
             // inject session id
             data.sessionId = this.session_id;
 
+            var self = this;
+
             //track number of attempts to publish
             var attemptCounter = 0;
             if(attempts) {
@@ -171,7 +173,9 @@
                             console.log("Failed to log to loggly because of a network condition.");
                             console.log("Will attempt to log again in 5 seconds.");
 
-                            postTimeout = setTimeout(this.track(data, attemptCounter + 1), 5000);
+                            postTimeout = setTimeout(function() {
+                                self.track(data, attemptCounter + 1)
+                            }, 5000);
                         } else {
                             console.log("Loggly has attempted to log this data for the last minute and failed. Ceasing" +
                                 " attempts to log.");
@@ -179,8 +183,9 @@
 
                             clearTimeout(postTimeout);
                         }
-                    } else if (xmlHttp.status === 200) {
+                    } else if (xmlHttp.status === 200 || xmlHttp.status === 304) {
                         if(postTimeout) {
+                            console.log("Successfully logged to loggly.");
                             clearTimeout(postTimeout);
                             attemptCounter = 0;
                         }
