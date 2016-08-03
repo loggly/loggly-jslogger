@@ -165,23 +165,33 @@
                 xmlHttp.open('POST', this.inputUrl, true); //true for asynchronous request
                 xmlHttp.setRequestHeader('Content-Type', 'text/plain');
                 xmlHttp.send(JSON.stringify(data));
-                if(postTimeout) {
-                    clearTimeout(postTimeout);
-                }
+                xmlHttp.onreadystatechange = function() {
+                    if(xmlHttp.readyState === 4 && xmlHttp.status !== 200) {
+                        if(attemptCounter <= 12) {
+                            console.log("Failed to log to loggly because of a network condition.");
+                            console.log("Will attempt to log again in 5 seconds.");
+
+                            postTimeout = setTimeout(this.track(data, attemptCounter + 1), 5000);
+                        } else {
+                            console.log("Loggly has attempted to log this data for the last minute and failed. Ceasing" +
+                                " attempts to log.");
+                            console.log("Failed log data:", data);
+
+                            clearTimeout(postTimeout);
+                        }
+                    } else if (xmlHttp.status === 200) {
+                        if(postTimeout) {
+                            clearTimeout(postTimeout);
+                            attemptCounter = 0;
+                        }
+                    }
+                };
 
             } catch (ex) {
-                if(attemptCounter <= 12) {
-                    if (window && window.console && typeof window.console.log === 'function') {
-                        console.log("Failed to log to loggly because of this exception:\n" + ex);
-                        console.log("Failed log data:", data);
-                        console.log("Loggly will attempt in 5 seconds to log this again.");
-                    }
-                    postTimeout = setTimeout(this.track(data, attemptCounter + 1), 5000);
-                } else {
-                    clearTimeout(postTimeout);
-                    console.log("Loggly has attempted to log this data for the last minute and failed. Ceasing" +
-                        " attempts to log.");
+                if (window && window.console && typeof window.console.log === 'function') {
+                    console.log("Failed to log to loggly because of this exception:\n" + ex);
                     console.log("Failed log data:", data);
+                    console.log("Loggly will attempt in 5 seconds to log this again.");
                 }
             }
         },
