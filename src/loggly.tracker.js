@@ -1,13 +1,12 @@
 (function (window, document) {
     var LOGGLY_INPUT_PREFIX = 'http' + ( ('https:' === document.location.protocol ? 's' : '') ) + '://',
-        LOGGLY_COLLECTOR_DOMAIN = 'logs-01.loggly.com',
-        LOGGLY_SESSION_KEY = 'logglytrackingsession',
-        LOGGLY_SESSION_KEY_LENGTH = LOGGLY_SESSION_KEY.length + 1,
-        LOGGLY_PROXY_DOMAIN = 'loggly';
+    LOGGLY_COLLECTOR_DOMAIN = 'logs-01.loggly.com',
+    LOGGLY_SESSION_KEY = 'logglytrackingsession',
+    LOGGLY_SESSION_KEY_LENGTH = LOGGLY_SESSION_KEY.length + 1,
+    LOGGLY_PROXY_DOMAIN = 'loggly';
 
     function uuid() {
-        // lifted from here ->
-        // http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript/2117523#2117523
+        // lifted from here -> http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript/2117523#2117523
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
             var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
             return v.toString(16);
@@ -184,6 +183,7 @@
                             clearTimeout(postTimeout);
                         }
                     } else if (xmlHttp.status === 200 || xmlHttp.status === 304) {
+                        // It will only run this if there was a previous failure
                         if(postTimeout) {
                             console.log("Successfully logged to loggly.");
                             clearTimeout(postTimeout);
@@ -196,7 +196,6 @@
                 if (window && window.console && typeof window.console.log === 'function') {
                     console.log("Failed to log to loggly because of this exception:\n" + ex);
                     console.log("Failed log data:", data);
-                    console.log("Loggly will attempt in 5 seconds to log this again.");
                 }
             }
         },
