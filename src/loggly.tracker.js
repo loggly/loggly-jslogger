@@ -30,7 +30,7 @@
         tracker.tag = tag;
     }
 
-    function setTag(tracker, forceHTTPS){
+    function setForceHTTPS(tracker, forceHTTPS){
         tracker.forceHTTPS = forceHTTPS;
     }
 
