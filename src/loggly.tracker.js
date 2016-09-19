@@ -67,7 +67,7 @@
     function setInputUrl(tracker) {
 
         if(tracker.useDomainProxy == true){
-            tracker.inputUrl = LOGGLY_INPUT_PREFIX
+            tracker.inputUrl = getInputPrefix(tracker)
             + window.location.host
             + '/'
             + LOGGLY_PROXY_DOMAIN
@@ -77,7 +77,7 @@
             + tracker.tag;
         }
         else{
-            tracker.inputUrl = LOGGLY_INPUT_PREFIX
+            tracker.inputUrl = getInputPrefix(tracker)
             + (tracker.logglyCollectorDomain || LOGGLY_COLLECTOR_DOMAIN)
             + '/inputs/'
             + tracker.key
