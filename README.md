@@ -1,7 +1,7 @@
 loggly-jslogger
 ===============
 
-Client-side (browser) logger to use with Loggly gen2. Check out Loggly's [Javascript logging documentation](https://www.loggly.com/docs/javascript/) to learn more. 
+Client-side (browser) logger to use with Loggly gen2. Check out Loggly's [Javascript logging documentation](https://www.loggly.com/docs/javascript/) to learn more.
 
 Installation
 ------------
@@ -48,7 +48,7 @@ myBetterLogger.push({'logglyKey': 'your-customer-token' });  // push a loggly ke
 
 Send Console Errors to Loggly
 ----
-Keeping <strong>sendConsoleErrors</strong> value to <i>true</i> will send all the unhandled errors to the Loggly with the detailed information like error message, URL, line number and column number. This script also take cares of all the previously defined window.onerror functions. 
+Keeping <strong>sendConsoleErrors</strong> value to <i>true</i> will send all the unhandled errors to the Loggly with the detailed information like error message, URL, line number and column number. This script also take cares of all the previously defined window.onerror functions.
 
 Send Tags to Loggly
 ----
@@ -89,4 +89,18 @@ location /loggly/ {
 	proxy_set_header X-Forwarded-For $remote_addr;
 	proxy_pass http://logs-01.loggly.com;
 }
+```
+
+Force HTTPS
+----
+
+If you don't want Loggly to detect what protocol to use and enforce https
+
+```Javascript
+_LTracker.push({
+  'logglyKey': 'your-customer-token',
+  'sendConsoleErrors' : true,
+  'tag' : 'javascript-logs',
+  'forceHTTPS':false
+});
 ```
