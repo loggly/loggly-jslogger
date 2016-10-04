@@ -12,7 +12,7 @@
     "loggly-jslogger",
     "jslogger",
     "loggly",
-	"log"
+	  "log"
   ],
   "license": "MIT",
   "devDependencies": {
