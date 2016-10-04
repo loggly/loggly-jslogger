@@ -1,0 +1,19 @@
+{
+    "directory": "../frontend_modules",
+    "registry": {
+        "register": "http://man-macmini.nce.amadeus.net:5678",
+        "search": [
+            "http://man-macmini.nce.amadeus.net:5678",
+            "https://bower.herokuapp.com"
+        ]
+    },
+    "resolvers": [
+        "bower-npm-resolver"
+    ],
+    "bowerNpmResolver": {
+        "matchPrefix": "amadeus",
+        "stripPrefix": false
+    },
+    "strict-ssl": false,
+    "timeout": 300000
+}
