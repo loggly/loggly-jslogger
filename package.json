@@ -1,6 +1,6 @@
 {
   "name": "loggly-jslogger",
-  "version": "2.1.0",
+  "version": "2.2.1",
   "description": "A Javascript client to send logs to Loggly.",
   "browser": "index.js",
   "repository": {
@@ -12,7 +12,7 @@
     "loggly-jslogger",
     "jslogger",
     "loggly",
-	"log"
+	  "log"
   ],
   "license": "MIT",
   "devDependencies": {

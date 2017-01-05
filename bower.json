@@ -5,9 +5,9 @@
   "_target": "*",
   "_originalSource": "loggly-jslogger",
   "_direct": true,
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "A Javascript client to send logs to Loggly.",
-  "main": "src/loggly.tracker.js",
+  "main": "src/loggly.tracker-2.2.min.js",
   "keywords": [
     "loggly-jslogger",
     "jslogger",

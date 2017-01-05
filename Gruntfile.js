@@ -7,7 +7,7 @@ module.exports = function (grunt) {
       },
       main : {
         files : {
-          'src/loggly.tracker-2.1.min.js' : ['src/loggly.tracker.js']
+          'src/loggly.tracker-2.2.min.js' : ['src/loggly.tracker.js']
         }
       }
     }
