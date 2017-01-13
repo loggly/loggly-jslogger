@@ -95,7 +95,7 @@
                 }
             }
         },
-        push: function(data) {
+        push: function(data, callback) {
             var type = typeof data;
             
             if( !data || !(type === 'object' || type === 'string') ) {
@@ -142,11 +142,11 @@
                 return;
             }
             
-            self.track(data);
+            self.track(data, callback);
             
             
         },
-        track: function(data) {
+        track: function(data, callback) {
             // inject session id
             data.sessionId = this.session_id;
             
@@ -156,7 +156,10 @@
 		xmlHttp.open('POST', this.inputUrl, true); //true for asynchronous request
 		xmlHttp.setRequestHeader('Content-Type', 'text/plain');
 		xmlHttp.send(JSON.stringify(data));
-                
+		if(typeof callback === "function"){
+		    xmlHttp.onreadystatechange = function(event){callback(event,data)};
+        }
+
             } catch (ex) {
                 if (window && window.console && typeof window.console.log === 'function') {
                     console.log("Failed to log to loggly because of this exception:\n" + ex);
