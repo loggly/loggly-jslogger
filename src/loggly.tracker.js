@@ -42,7 +42,7 @@
 	if(tracker.sendConsoleErrors === true){
             var _onerror = window.onerror;
             //send console error messages to Loggly
-            window.onerror = function (msg, url, line, col){
+            window.onerror = function (msg, url, line, col, err){
                 tracker.push({ 
                     category: 'BrowserJsException',
                     exception: {
@@ -50,6 +50,7 @@
                         url: url,
                         lineno: line,
                         colno: col,
+                        stack: err ? err.stack : 'n/a',
                     }
                 });
 				
