@@ -90,3 +90,10 @@ location /loggly/ {
 	proxy_pass http://logs-01.loggly.com;
 }
 ```
+
+Build min and map file
+----------
+You can build min and map file by using command
+```
+grunt uglify
+```
