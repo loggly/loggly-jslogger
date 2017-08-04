@@ -1,3 +1,7 @@
 jasminetest
 Gruntfile.js
 bower.json
+.editorconfig
+
+# Allow everything under src directory
+!/src/*
