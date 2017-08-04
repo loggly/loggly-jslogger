@@ -1,0 +1,7 @@
+/dist
+/node_modules
+
+# Ignore everything in src folder except for loggly.tracker.js file
+/src/*
+# !/src/loggly.tracker.js
+
