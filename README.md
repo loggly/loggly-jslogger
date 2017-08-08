@@ -93,7 +93,7 @@ location /loggly/ {
 
 Build min and map file
 ----------
-You can build min and map file by using command
+You can build min and map file by using the command below:
 ```
 grunt uglify
 ```
