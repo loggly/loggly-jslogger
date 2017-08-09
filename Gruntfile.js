@@ -1,15 +1,17 @@
 module.exports = function (grunt) {
+  var packageJson = grunt.file.readJSON('package.json');
   grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'),
+    pkg: packageJson,
     uglify: {
       options: {
         sourceMap: true,
-        sourceMapName: 'src/loggly.tracker-2.1.min.map'
+        sourceMapName: 'src/loggly.tracker-' + packageJson.version + '.min.map'
       },
       main: {
-        files: {
-          'src/loggly.tracker-2.1.min.js' : ['src/loggly.tracker.js']
-        }
+        files: [{
+        src: 'src/loggly.tracker.js',
+        dest: 'src/loggly.tracker-' + packageJson.version + '.min.js'
+      }]
       }
     }
   });
