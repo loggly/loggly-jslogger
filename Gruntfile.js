@@ -5,12 +5,12 @@ module.exports = function (grunt) {
     uglify: {
       options: {
         sourceMap: true,
-        sourceMapName: 'src/loggly.tracker-' + packageJson.version + '.min.map'
+        sourceMapName: 'dist/loggly.tracker-' + packageJson.version + '.min.map'
       },
       main: {
         files: [{
         src: 'src/loggly.tracker.js',
-        dest: 'src/loggly.tracker-' + packageJson.version + '.min.js'
+        dest: 'dist/loggly.tracker-' + packageJson.version + '.min.js'
       }]
       }
     }
