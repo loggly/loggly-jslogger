@@ -3,5 +3,4 @@
 
 # Ignore everything in src folder except for loggly.tracker.js file
 /src/*
-# !/src/loggly.tracker.js
-
+!/src/loggly.tracker.js
