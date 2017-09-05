@@ -3,6 +3,3 @@ Gruntfile.js
 bower.json
 .editorconfig
 package-lock.json
-
-# Allow everything under src directory
-!/src/*
