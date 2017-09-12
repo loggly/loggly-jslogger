@@ -96,5 +96,5 @@ Build min and map file
 You can build min and map file by using the command below:
 ```
 npm install
-grunt uglify
+grunt
 ```
