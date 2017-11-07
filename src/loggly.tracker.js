@@ -43,7 +43,7 @@
             var _onerror = window.onerror;
             //send console error messages to Loggly
             window.onerror = function (msg, url, line, col, err){
-                tracker.push({ 
+                tracker.push({
                     category: 'BrowserJsException',
                     exception: {
                         message: msg,
@@ -181,7 +181,98 @@
         },
         setCookie: function (value) {
             document.cookie = LOGGLY_SESSION_KEY + '=' + value;
-        }
+        },
+        injectedList:{},
+        getTargetObjectFromString:function(targetObjectName){
+          try{
+                 return eval(targetObjectName);
+            }
+          catch(error){
+            return null;
+          }
+        },
+        injectLog:function(request){
+                if(!request.enable){
+                    return;
+                }
+                if(request.enable<(Math.random()*100)){
+                    return;
+                }
+                if(!request.target){
+                    return;
+                }
+
+                if(!request.name){
+                  return;
+                }
+                if(this.injectedList[request.target]){
+                     return;
+                }
+                var targetparts=request.target.split(".");
+                if(targetparts.length<=1){
+                  return;
+                }
+                var targetObject=this.getTargetObjectFromString(targetparts[0]);
+                for(var i=1;(i+1)<targetparts.length;i++){
+                    if(!targetObject){
+                        return null;
+                    }
+                    targetObject=targetObject[targetparts[i]];
+                }
+                if(!targetObject){
+                    return;
+                }
+                var methodName=targetparts[targetparts.length-1];
+                var targetFunction=targetObject[methodName];
+                if(!targetFunction){
+                    return;
+                }
+                this.injectedList[request.target]=targetFunction;
+
+                var that=this;
+                targetObject[methodName]=function(){
+                    var ret=targetFunction.apply(targetObject, arguments);
+                    var data={};
+                    if((!arguments) || arguments.length==0){
+                        if(ret){
+                            data[request.name]=ret;
+                        }
+                        else{
+                            data[request.name]="empty";
+                        }
+                    }
+                    else if(arguments.length==1){
+                        if(!ret){
+                            data[request.name]=arguments[0];
+                        }
+                        else{
+                            data[request.name]={input:arguments[0],
+                                           output:ret};
+                        }
+                    }
+                    else {
+                        if(!ret){
+                            data[request.name]={};
+                            for(var i=0;i<arguments.length;i++){
+                                data[request.name]['param'+(i+1)]=arguments[i];
+                            }
+                        }
+                        else{
+                            data[request.name]={
+                                    input:{},
+                                    output:ret
+                            };
+                            for(var i=0;i<arguments.length;i++){
+                                data[request.name].input['param'+(i+1)]=arguments[i];
+                            }
+                        }
+
+                    }
+                    that.track(data);
+                    return ret;
+                };
+            },
+
     };
 
     var existing = window._LTracker;
