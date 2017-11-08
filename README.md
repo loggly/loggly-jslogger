@@ -165,12 +165,12 @@ On other hand if the injected function has the return value, for example if the 
 
 ```Javascript
 LTracker.injectLog({
-name:"LocalStorageLog"
-target:"localStorage.getItem",
-enable:100
+"name":"localStorageGetItem",
+"target":"localStorage.getItem",
+"enable":100
 });
 ```
-The Loggly will monitor ```localStorage.getUten``` function.
+The Loggly will monitor ```localStorage.getItem``` function.
 
 So if the application executes:
 ```Javascript
@@ -182,6 +182,6 @@ and if the returned value from the localStorage is "dilshat"
 then injected code executes the following:
 ```Javascript
 _LTracker.push({
-LocalStorageLog:{input:"username", output:"dilshat"}
+localStorageGetItem:{input:"username", output:"dilshat"}
 })
 ```
