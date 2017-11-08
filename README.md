@@ -136,21 +136,24 @@ _LTracker.push({
 
 The name of the variable ```error``` is coming from the ```name``` attribute passed into the ```_LTracker.injectLog```  in the previous example.
 
-The input parameter is an object, for example:
+If the input parameter is an object, for example:
+
 ```Javascript
 console.error({errorcode:"Error01", description:"Something goes wrong"});
 ```
-The injected code will execute:
+the injected code will execute:
 
 ```Javascript
 _LTracker.push({
 error:{errorcode:"Error01", description:"Something goes wrong"}
 })
 ```
-If multiple parameters are passed in:
+If multiple parameters are passed in to the function:
+
 ```Javascript
 console.error("Something wrong", {errorCode:"001", errorCotent:"wierd error"});
 ```
+
 The injected code will execute:
 ```Javascript
 _LTracker.push({
@@ -158,22 +161,27 @@ error:{param1:"Something wrong", param2:{errorCode:"001", errorCotent:"wierd err
 })
 ```
 
-On other hand if the injected function has the return value, for example if we have the following:
+On other hand if the injected function has the return value, for example if the following is executed as soon as the Loggly is initializez:
 
+```Javascript
 LTracker.injectLog({
 name:"LocalStorageLog"
 target:"localStorage.getItem",
 enable:100
 });
+```
+The Loggly will monitor ```localStorage.getUten``` function.
 
-if the application executes:
-
+So if the application executes:
+```Javascript
 var username=localStorage.getItem("username");
+```
 
 and if the returned value from the localStorage is "dilshat"
 
 then injected code executes the following:
-
+```Javascript
 _LTracker.push({
 LocalStorageLog:{input:"username", output:"dilshat}
 })
+```
