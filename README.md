@@ -182,6 +182,6 @@ and if the returned value from the localStorage is "dilshat"
 then injected code executes the following:
 ```Javascript
 _LTracker.push({
-LocalStorageLog:{input:"username", output:"dilshat}
+LocalStorageLog:{input:"username", output:"dilshat"}
 })
 ```
