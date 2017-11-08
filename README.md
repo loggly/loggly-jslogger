@@ -113,7 +113,7 @@ Also you may like to enable this automatic logging for only some percentage of u
 For example if you would to log the console.error() function, you just need to put the code below as soon as you have initialised the Loggly:
 ```Javascript
     _LTracker.injectLog({
-        enable:100
+        enable:100,
         target:"console.error",
         name:"error"
     });
