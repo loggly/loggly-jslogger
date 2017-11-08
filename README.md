@@ -185,3 +185,4 @@ _LTracker.push({
 localStorageGetItem:{input:"username", output:"dilshat"}
 })
 ```
+You can test it here https://jsfiddle.net/dilshat/1t0y6dp1/
