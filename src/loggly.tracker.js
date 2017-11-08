@@ -183,14 +183,6 @@
             document.cookie = LOGGLY_SESSION_KEY + '=' + value;
         },
         injectedList:{},
-        getTargetObjectFromString:function(targetObjectName){
-          try{
-                 return eval(targetObjectName);
-            }
-          catch(error){
-            return null;
-          }
-        },
         injectLog:function(request){
                 if(!request.enable){
                     return;
@@ -212,7 +204,14 @@
                 if(targetparts.length<=1){
                   return;
                 }
-                var targetObject=this.getTargetObjectFromString(targetparts[0]);
+                var targetObject=null;
+                if(request.targetBase && typeof request.targetBase === 'object'){
+                  targetObject=request.targetBase;
+                }
+                else{
+                         targetObject=this.getTargetObjectFromString(targetparts[0]);
+                }
+
                 for(var i=1;(i+1)<targetparts.length;i++){
                     if(!targetObject){
                         return null;
@@ -272,6 +271,14 @@
                     return ret;
                 };
             },
+            getTargetObjectFromString:function(targetObjectName){
+              try{
+                     return eval(targetObjectName);
+                }
+              catch(error){
+                    this.track({logglyconfigerror: "loggly config eval error:"+error+" the device may not support evail, consider use targetBase"});
+              }
+            }
 
     };
 
