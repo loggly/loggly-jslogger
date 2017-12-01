@@ -150,13 +150,36 @@
         track: function (data) {
             // inject session id
             data.sessionId = this.session_id;
+            var toStringValue=function(obj){
+                //In Samsung TV Orsay, JSON.stringify will be in infinite loop when in circular reference, and a difference reference passed in the second parameter. So we have to use counter to get out of the infinite loop.
+                var objectData=[];
+                var objectName=[];
+                var count=0;
+                return JSON.stringify(obj, function(key, val) {
+                    count++;
+                    if(count>10){
+                        return;
+                    }
+                if (typeof val === "object") {
+                      var ind=objectData.indexOf(val);
+                      if (ind >= 0) {
+                         return "$"+objectName[ind];
+                      }
+                      else{
+                          objectData.push(val);
+                          objectName.push(key);
+                      }
+                 }
+                 return val;
+               });
 
+            };
             try {
                 //creating an asynchronous XMLHttpRequest
                 var xmlHttp = new XMLHttpRequest();
                 xmlHttp.open('POST', this.inputUrl, true); //true for asynchronous request
                 xmlHttp.setRequestHeader('Content-Type', 'text/plain');
-                xmlHttp.send(JSON.stringify(data));
+                xmlHttp.send(toStringValue(data));
 
             } catch (ex) {
                 if (window && window.console && typeof window.console.log === 'function') {
@@ -183,6 +206,47 @@
             document.cookie = LOGGLY_SESSION_KEY + '=' + value;
         },
         injectedList:{},
+        buildInjectLog: function(inputParameters, outputParameters, errorObject){
+            if(errorObject){
+                if(!inputParameters){
+                    inputParameters="";
+                }
+                if(!outputParameters){
+                    outputParameters="";
+                }
+                return {
+                    error:errorObject,
+                    input:inputParameters,
+                    output:outputParameters
+                };
+            }
+            else if(outputParameters){
+                if(!inputParameters){
+                    inputParameters="";
+                }
+                return {
+                    input:inputParameters,
+                    output:outputParameters
+                };
+            }
+            else if((!inputParameters) || inputParameters.length==0){
+                return "";
+            }
+            else if(inputParameters.length==1){
+                if(inputParameters[0]){
+                    return inputParameters[0];
+                }
+                else{
+                    return "";
+                }
+
+            }
+            else {
+                return inputParameters;
+            }
+
+        },
+
         injectLog:function(request){
                 if(!request.enable){
                     return;
@@ -227,48 +291,24 @@
                     return;
                 }
                 this.injectedList[request.target]=targetFunction;
-
                 var that=this;
                 targetObject[methodName]=function(){
-                    var ret=targetFunction.apply(targetObject, arguments);
-                    var data={};
-                    if((!arguments) || arguments.length==0){
-                        if(ret){
-                            data[request.name]=ret;
-                        }
-                        else{
-                            data[request.name]="empty";
-                        }
-                    }
-                    else if(arguments.length==1){
-                        if(!ret){
-                            data[request.name]=arguments[0];
-                        }
-                        else{
-                            data[request.name]={input:arguments[0],
-                                           output:ret};
-                        }
-                    }
-                    else {
-                        if(!ret){
-                            data[request.name]={};
-                            for(var i=0;i<arguments.length;i++){
-                                data[request.name]['param'+(i+1)]=arguments[i];
-                            }
-                        }
-                        else{
-                            data[request.name]={
-                                    input:{},
-                                    output:ret
-                            };
-                            for(var i=0;i<arguments.length;i++){
-                                data[request.name].input['param'+(i+1)]=arguments[i];
-                            }
-                        }
 
-                    }
-                    that.track(data);
-                    return ret;
+                            var returnValue=null;
+                            var errorObject=null;
+                            try{
+                                     returnValue=targetFunction.apply(targetObject, arguments);
+                               }
+                             catch(error){
+                                     errorObject=error;
+                             }
+                              var data={};
+                              data[request.name]=that.buildInjectLog(arguments,returnValue,errorObject);
+                              that.track(data);
+                             if(errorObject){
+                                  throw errorObject;
+                              }
+                             return returnValue;
                 };
             },
             getTargetObjectFromString:function(targetObjectName){
