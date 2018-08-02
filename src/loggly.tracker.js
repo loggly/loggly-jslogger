@@ -18,6 +18,7 @@
         this.sendConsoleErrors = false;
         this.tag = 'jslogger';
         this.useDomainProxy = false;
+        this.useUtfEncoding = false;
     }
 
     function setKey(tracker, key) {
@@ -34,6 +35,10 @@
         tracker.useDomainProxy = useDomainProxy;
         //refresh inputUrl value
         setInputUrl(tracker);
+    }
+
+    function setUtfEncoding(tracker, useUtfEncoding){
+        tracker.useUtfEncoding = useUtfEncoding;
     }
 
     function setSendConsoleError(tracker, sendConsoleErrors) {
@@ -124,6 +129,10 @@
                     setTag(self, data.tag);
                 }
 
+                if (data.useUtfEncoding !== undefined) {
+                    setUtfEncoding(self, data.useUtfEncoding);
+                }
+
                 if (data.useDomainProxy) {
                     setDomainProxy(self, data.useDomainProxy);
                 }
@@ -155,7 +164,11 @@
                 //creating an asynchronous XMLHttpRequest
                 var xmlHttp = new XMLHttpRequest();
                 xmlHttp.open('POST', this.inputUrl, true); //true for asynchronous request
-                xmlHttp.setRequestHeader('Content-Type', 'text/plain');
+                if (tracker.useUtfEncoding === true) {
+                    xmlHttp.setRequestHeader('Content-Type', 'text/plain; charset=utf-8');
+                } else {
+                    xmlHttp.setRequestHeader('Content-Type', 'text/plain');
+                }
                 xmlHttp.send(JSON.stringify(data));
 
             } catch (ex) {
