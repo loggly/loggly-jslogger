@@ -63,6 +63,21 @@ _LTracker.push({
 });
 ```
 
+Special Characters Support
+----
+Keeping <strong>useUtfEncoding</strong> to <i>true</i> will prevent the Special Characters to being garbled on Loggly Search. You will be able to read and understand the included Special Characters in your log events more easily.
+
+Please see the usage  below-
+
+```Javascript
+_LTracker.push({
+      'logglyKey': 'your-customer-token',
+      'sendConsoleErrors' : true,
+      'tag' : 'javascript-logs',
+      'useUtfEncoding': true
+});
+```
+
 Setup Proxy for Ad blockers
 ----------
 You can proxy the requests from your own domain if the script or its requests are blocked by Ad blockers. To do this, you need to perform following steps
