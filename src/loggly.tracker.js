@@ -48,7 +48,7 @@
             var _onerror = window.onerror;
             //send console error messages to Loggly
             window.onerror = function (msg, url, line, col, err){
-                tracker.push({ 
+                tracker.push({
                     category: 'BrowserJsException',
                     exception: {
                         message: msg,
@@ -159,18 +159,41 @@
         track: function (data) {
             // inject session id
             data.sessionId = this.session_id;
+            var toStringValue=function(obj){
+                //In Samsung TV Orsay, JSON.stringify will be in infinite loop when in circular reference, and a difference reference passed in the second parameter. So we have to use counter to get out of the infinite loop.
+                var objectData=[];
+                var objectName=[];
+                var count=0;
+                return JSON.stringify(obj, function(key, val) {
+                    count++;
+                    if(count>10){
+                        return;
+                    }
+                if (typeof val === "object") {
+                      var ind=objectData.indexOf(val);
+                      if (ind >= 0) {
+                         return "$"+objectName[ind];
+                      }
+                      else{
+                          objectData.push(val);
+                          objectName.push(key);
+                      }
+                 }
+                 return val;
+               });
 
+            };
             try {
                 //creating an asynchronous XMLHttpRequest
                 var xmlHttp = new XMLHttpRequest();
                 xmlHttp.open('POST', this.inputUrl, true); //true for asynchronous request
+
                 if (tracker.useUtfEncoding === true) {
                     xmlHttp.setRequestHeader('Content-Type', 'text/plain; charset=utf-8');
                 } else {
                     xmlHttp.setRequestHeader('Content-Type', 'text/plain');
                 }
                 xmlHttp.send(JSON.stringify(data));
-
             } catch (ex) {
                 if (window && window.console && typeof window.console.log === 'function') {
                     console.log("Failed to log to loggly because of this exception:\n" + ex);
@@ -194,7 +217,122 @@
         },
         setCookie: function (value) {
             document.cookie = LOGGLY_SESSION_KEY + '=' + value;
-        }
+        },
+        injectedList:{},
+        buildInjectLog: function(inputParameters, outputParameters, errorObject){
+            if(errorObject){
+                if(!inputParameters){
+                    inputParameters="";
+                }
+                if(!outputParameters){
+                    outputParameters="";
+                }
+                return {
+                    error:errorObject,
+                    input:inputParameters,
+                    output:outputParameters
+                };
+            }
+            else if(outputParameters){
+                if(!inputParameters){
+                    inputParameters="";
+                }
+                return {
+                    input:inputParameters,
+                    output:outputParameters
+                };
+            }
+            else if((!inputParameters) || inputParameters.length==0){
+                return "";
+            }
+            else if(inputParameters.length==1){
+                if(inputParameters[0]){
+                    return inputParameters[0];
+                }
+                else{
+                    return "";
+                }
+
+            }
+            else {
+                return inputParameters;
+            }
+
+        },
+
+        injectLog:function(request){
+                if(!request.enable){
+                    return;
+                }
+                if(request.enable<(Math.random()*100)){
+                    return;
+                }
+                if(!request.target){
+                    return;
+                }
+
+                if(!request.name){
+                  return;
+                }
+                if(this.injectedList[request.target]){
+                     return;
+                }
+                var targetparts=request.target.split(".");
+                if(targetparts.length<=1){
+                  return;
+                }
+                var targetObject=null;
+                if(request.targetBase && typeof request.targetBase === 'object'){
+                  targetObject=request.targetBase;
+                }
+                else{
+                         targetObject=this.getTargetObjectFromString(targetparts[0]);
+                }
+
+                for(var i=1;(i+1)<targetparts.length;i++){
+                    if(!targetObject){
+                        return null;
+                    }
+                    targetObject=targetObject[targetparts[i]];
+                }
+                if(!targetObject){
+                    return;
+                }
+                var methodName=targetparts[targetparts.length-1];
+                var targetFunction=targetObject[methodName];
+                if(!targetFunction){
+                    return;
+                }
+                this.injectedList[request.target]=targetFunction;
+                var that=this;
+                targetObject[methodName]=function(){
+
+                            var returnValue=null;
+                            var errorObject=null;
+                            try{
+                                     returnValue=targetFunction.apply(targetObject, arguments);
+                               }
+                             catch(error){
+                                     errorObject=error;
+                             }
+                              var data={};
+                              data[request.name]=that.buildInjectLog(arguments,returnValue,errorObject);
+                              that.track(data);
+                             if(errorObject){
+                                  throw errorObject;
+                              }
+                             return returnValue;
+                };
+            },
+            getTargetObjectFromString:function(targetObjectName){
+              try{
+                     return eval(targetObjectName);
+                }
+              catch(error){
+                    this.track({logglyconfigerror: "loggly config eval error:"+error+" the device may not support evail, consider use targetBase"});
+              }
+            }
+
     };
 
     var existing = window._LTracker;
