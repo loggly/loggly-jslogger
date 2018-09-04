@@ -1,6 +1,6 @@
 {
-  "name": "loggly-jslogger",
-  "version": "2.2.3",
+  "name": "@ignite/loggly-jslogger",
+  "version": "2.3.0",
   "description": "A Javascript client to send logs to Loggly.",
   "browser": "index.js",
   "repository": {
