@@ -165,5 +165,34 @@ describe("loggly.tracker", function() {
         expect(localTracker.track).toHaveBeenCalledWith(data);
         expect(_LTracker.track).not.toHaveBeenCalled()
     });
-    
+
+    it("sets the tag and baseTag on initial push", function() {
+        var localTracker = new LogglyTracker(),
+            madeupKey = 'madeupkey',
+            baseTag = 'tag1',
+            secondTag = 'tag2',
+            thirdTag = 'tag3';
+
+        localTracker.push({'logglyKey':madeupKey, 'tag':baseTag});
+
+        expect(localTracker.tag).toBe(baseTag);
+        expect(localTracker.baseTag).toBe(baseTag);
+        expect(localTracker.inputUrl).toContain('/tag/' + baseTag);
+
+        localTracker.push({'tag':secondTag});
+
+        expect(localTracker.inputUrl).toContain('/tag/' + baseTag);
+        expect(localTracker.inputUrl).not.toContain('/tag/' + baseTag + ',' + secondTag);
+
+        localTracker.push({'tag':thirdTag});
+
+        expect(localTracker.inputUrl).toContain('/tag/' + baseTag);
+        expect(localTracker.inputUrl).not.toContain('/tag/' + baseTag + ',' + thirdTag);
+        expect(localTracker.inputUrl).not.toContain('/tag/' + baseTag + ',' + secondTag + ',' + thirdTag);
+
+        localTracker.push({'foo':'bar'});
+
+        expect(localTracker.inputUrl).toContain('/tag/' + baseTag);
+    });
+
 });

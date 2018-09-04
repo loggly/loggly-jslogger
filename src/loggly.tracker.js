@@ -29,6 +29,7 @@
 
     function setTag(tracker, tag) {
         tracker.tag = tag;
+        setInputUrl(tracker);
     }
 
     function setDomainProxy(tracker, useDomainProxy) {
@@ -109,7 +110,8 @@
             }
 
             var self = this;
-
+            var isInitialPush = !!data.logglyKey;
+            var isTagPresent = !!data.tag;
 
             if (type === 'string') {
                 data = {
@@ -125,8 +127,14 @@
                     setSendConsoleError(self, data.sendConsoleErrors);
                 }
 
-                if (data.tag) {
-                    setTag(self, data.tag);
+                if (isTagPresent) {
+                    // if this is the initial push, save this tag as the "base" tag
+                    if (isInitialPush) {
+                        self.baseTag = data.tag;
+                        setTag(self, data.tag);
+                    } else {
+                        setTag(self, self.baseTag + ',' + data.tag);
+                    }
                 }
 
                 if (data.useUtfEncoding !== undefined) {
@@ -154,7 +162,9 @@
 
             self.track(data);
 
-
+            if (isTagPresent && !isInitialPush) {
+                setTag(self, self.baseTag);
+            }
         },
         track: function (data) {
             // inject session id
