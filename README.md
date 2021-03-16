@@ -7,7 +7,7 @@ Client-side (browser) logger to use with Loggly gen2. Check out Loggly's [Javasc
 Place the following on your page, and replace the logglyKey value with the key provided by the website:
 
 ```html
-<script type="text/javascript" src="https://cloudfront.loggly.com/js/loggly.tracker-latest.min.js" async></script>
+<script type="text/javascript" src="https://cloudfront.loggly.com/js/loggly.tracker-2.2.4.min.js" async></script>
 <script>
   var _LTracker = _LTracker || [];
   _LTracker.push({
