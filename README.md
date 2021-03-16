@@ -110,3 +110,7 @@ location /loggly/ {
 ## Build Production Version
 
 Run `npm run build` to build production version. The output is saved in folder `dist`.
+
+## Run tests
+
+Open file `jasminetest/TrackerSpecRunner.html`.
