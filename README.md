@@ -113,4 +113,4 @@ Run `npm run build` to build production version. The output is saved in folder `
 
 ## Run tests
 
-Open file `jasminetest/TrackerSpecRunner.html`.
+In your web browser open file `jasminetest/TrackerSpecRunner.html`.
