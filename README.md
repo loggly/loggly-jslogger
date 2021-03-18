@@ -18,6 +18,8 @@ Place the following on your page, and replace the logglyKey value with the key p
 </script>
 ```
 
+We also publish the `latest` version at [https://cloudfront.loggly.com/js/loggly.tracker-latest.min.js](https://cloudfront.loggly.com/js/loggly.tracker-latest.min.js), but we discourage you to use it outside development environment as it might include breaking changes.
+
 ## Usage
 
 Logging text:
