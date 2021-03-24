@@ -52,7 +52,7 @@ myBetterLogger.push({'logglyKey': 'your-customer-token' });  // push a loggly ke
 
 ## Send Console Errors to Loggly
 
-Keep the **sendConsoleErrors** value to *true*  to send all unhandled errors to Loggly with detailed information, including error message, URL, line number and column number. This script also take cares of the previously defined **window.onerror** functions.
+Keep the **sendConsoleErrors** value to *true*  to send all unhandled errors to Loggly with detailed information, including error message, URL, line number and column number. This will also take care of the previously defined **window.onerror** function.
 
 ## Send Tags to Loggly
 
