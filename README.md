@@ -1,10 +1,10 @@
 # loggly-jslogger
 
-Client-side (browser) logger to use with Loggly. Check out Loggly's [Javascript logging documentation](https://www.loggly.com/docs/javascript/) to learn more.
+Client-side (browser) logger to send Javascript logs from any website to Loggly. Check out Loggly’s [Javascript logging documentation](https://documentation.solarwinds.com/en/Success_Center/loggly/default.htm#cshid=loggly_javascript) to learn more.
 
 ## Installation
 
-Place the following on your page, and replace the logglyKey value with the key provided by the website:
+Insert the following code into your webpage, replacing `your-customer-token` with the key defined in the Loggly source setup page:
 
 ```html
 <script type="text/javascript" src="https://cloudfront.loggly.com/js/loggly.tracker-2.2.4.min.js" async></script>
@@ -18,7 +18,7 @@ Place the following on your page, and replace the logglyKey value with the key p
 </script>
 ```
 
-We also publish the `latest` version at [https://cloudfront.loggly.com/js/loggly.tracker-latest.min.js](https://cloudfront.loggly.com/js/loggly.tracker-latest.min.js), but we discourage you to use it outside development environment as it might include breaking changes.
+To get early access to the most recent updates to the tracker, use the script [https://cloudfront.loggly.com/js/loggly.tracker-latest.min.js](https://cloudfront.loggly.com/js/loggly.tracker-latest.min.js). This is not recommended in a production environment as it may include breaking changes.
 
 ## Usage
 
@@ -43,7 +43,7 @@ _LTracker.push({
 
 ## Customization
 
-Separate logging instace:
+Separate logging instance:
 
 ```javascript
 var myBetterLogger = new LogglyTracker();
@@ -52,7 +52,7 @@ myBetterLogger.push({'logglyKey': 'your-customer-token' });  // push a loggly ke
 
 ## Send Console Errors to Loggly
 
-Keeping **sendConsoleErrors** value to *true* will send all the unhandled errors to the Loggly with the detailed information like error message, URL, line number and column number. This script also take cares of all the previously defined window.onerror functions.
+Keep the **sendConsoleErrors** value to *true*  to send all unhandled errors to Loggly with detailed information, including error message, URL, line number and column number. This script also take cares of the previously defined **window.onerror** functions.
 
 ## Send Tags to Loggly
 
@@ -68,9 +68,10 @@ _LTracker.push({
 
 ## Special Characters Support
 
-Keeping **useUtfEncoding** to *true* will prevent the Special Characters to being garbled on Loggly Search. You will be able to read and understand the included Special Characters in your log events more easily.
+Keep the **useUtfEncoding** value to *true* to prevent special characters from showing as odd or unusual characters in Loggly Search. Special characters will be easier to read and understand in your log events.
 
-Please see the usage below:
+
+See the usage below:
 
 ```Javascript
 _LTracker.push({
@@ -83,7 +84,7 @@ _LTracker.push({
 
 ## Setup Proxy for Ad blockers
 
-You can proxy the requests from your own domain if the script or its requests are blocked by Ad blockers. To do this, you need to perform following steps
+If the script or its requests are blocked by ad blockers, you can proxy requests from your own domain. To do this, perform following steps
 
 Set `useProxyDomain` property to true
 
