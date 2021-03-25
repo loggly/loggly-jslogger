@@ -4,7 +4,7 @@ Client-side (browser) logger to send Javascript logs from any website to Loggly.
 
 ## Installation
 
-Insert the following code into your webpage, replacing `your-customer-token` with the key defined in the Loggly source setup page:
+Insert the following code into your webpage, replacing `your-customer-token` with the key defined in the `Source Setup -> Customer Tokens` page:
 
 ```html
 <script type="text/javascript" src="https://cloudfront.loggly.com/js/loggly.tracker-2.2.4.min.js" async></script>
@@ -52,7 +52,7 @@ myBetterLogger.push({'logglyKey': 'your-customer-token' });  // push a loggly ke
 
 ## Send Console Errors to Loggly
 
-Keep the **sendConsoleErrors** value to *true*  to send all unhandled errors to Loggly with detailed information, including error message, URL, line number and column number. This will also take care of the previously defined **window.onerror** function.
+Keep the **sendConsoleErrors** value to *true*  to send all unhandled errors to Loggly with detailed information, including error message, URL, line number and column number.
 
 ## Send Tags to Loggly
 
@@ -68,7 +68,7 @@ _LTracker.push({
 
 ## Special Characters Support
 
-Keep the **useUtfEncoding** value to *true* to prevent special characters from showing as odd or unusual characters in Loggly Search. Special characters will be easier to read and understand in your log events.
+Set the **useUtfEncoding** value to *true* to prevent special characters from showing as odd or unusual characters in Loggly Search. Special characters will be easier to read and understand in your log events.
 
 
 See the usage below:
