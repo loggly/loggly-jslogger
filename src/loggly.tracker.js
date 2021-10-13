@@ -1,4 +1,9 @@
 (function (window, document) {
+    // If not running in a browser then do nothing
+    if (typeof window == "undefined") {
+        return;
+    }
+
     var LOGGLY_INPUT_PREFIX = 'http' + (('https:' === document.location.protocol ? 's' : '')) + '://',
         LOGGLY_COLLECTOR_DOMAIN = 'logs-01.loggly.com',
         LOGGLY_SESSION_KEY = 'logglytrackingsession',
