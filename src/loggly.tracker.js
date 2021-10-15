@@ -1,9 +1,9 @@
-(function (window, document) {
-    // If not running in a browser then do nothing
-    if (typeof window == "undefined") {
-        return;
-    }
+// If not running in a browser then do nothing
+if (typeof window == "undefined") {
+  return;
+}
 
+(function (window, document) {
     var LOGGLY_INPUT_PREFIX = 'http' + (('https:' === document.location.protocol ? 's' : '')) + '://',
         LOGGLY_COLLECTOR_DOMAIN = 'logs-01.loggly.com',
         LOGGLY_SESSION_KEY = 'logglytrackingsession',
@@ -53,7 +53,7 @@
             var _onerror = window.onerror;
             //send console error messages to Loggly
             window.onerror = function (msg, url, line, col, err){
-                tracker.push({ 
+                tracker.push({
                     category: 'BrowserJsException',
                     exception: {
                         message: msg,
