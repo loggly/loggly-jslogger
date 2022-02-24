@@ -1,6 +1,9 @@
 # loggly-jslogger
 
+[![npm version](https://img.shields.io/npm/v/loggly-jslogger.svg)](https://www.npmjs.org/package/loggly-jslogger)
+
 Client-side (browser) logger to send Javascript logs from any website to Loggly. Check out Loggly’s [Javascript logging documentation](https://documentation.solarwinds.com/en/Success_Center/loggly/default.htm#cshid=loggly_javascript) to learn more.
+
 
 ## Installation
 
